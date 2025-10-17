@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+  # Defines the service name
+  kong:
+    # Specifies the Docker image to use
+    image: kong:latest
+    # Sets the container's hostname dynamically using service name and task slot
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    # Attaches the service to a predefined Docker network
+    networks:
+      - YOUR_NETWORK
+    # Sets environment variables for configuring Kong
+    environment:
+      # Enables DB-less mode (Kong without a database)
+      KONG_DATABASE: "off"
+      # Path to the declarative configuration file
+      KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
+      # DNS resolution order
+      KONG_DNS_ORDER: CNAME,A
+      # Enables use of specific Lua modules in untrusted environment
+      KONG_UNTRUSTED_LUA_SANDBOX_ENVIRONMENT: "off"
+      KONG_UNTRUSTED_LUA_SANDBOX_REQUIRES: cjson,ngx.base64,cjson.safe
+      # Declares custom plugins
+      KONG_CUSTOM_PLUGINS: serverless-functions
+      # Lists built-in and custom plugins to be enabled
+      KONG_PLUGINS: response-transformer,request-transformer,cors,key-auth,acl,pre-function,post-function
+      # Configures NGINX proxy buffer settings for better performance
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
+      KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
+    # Mounts the local configuration file into the container
+    volumes:
+      - /root/routes.yaml:/var/lib/kong/kong.yml
+    deploy:
+      # Sets the deployment mode to replicated (for scalability)
+      mode: replicated
+      # Number of container replicas to run
+      replicas: 1
+      # Specifies placement constraints — runs only on manager nodes
+      placement:
+        constraints:
+          - node.role == manager
+          # Optional: restrict to a specific node by hostname
+          # - node.hostname == worker1
+      # Sets resource limits to avoid overloading the host
+      resources:
+        limits:
+          # CPU limit
+          cpus: "1"
+          # Memory limit
+          memory: 1024M
+      # Placeholder for any container labels (currently empty)
+      labels:
+
+# Defines the external Docker network used by the service
+networks:
+  network_swarm_public:
+    external: true
+    name: YOUR_NETWORK

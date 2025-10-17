@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+
+  agent:
+    # Portainer Agent Stable image (using the 'sts' tag) 
+    # https://hub.docker.com/r/portainer/agent/tags
+    image: portainer/agent:sts
+    volumes:
+      # Mount Docker socket to communicate with Docker daemon on the host
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Mount Docker volumes directory for volume management
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - YOUR_NETWORK
+    deploy:
+      # Run one agent container on every node in the swarm cluster
+      mode: global
+      placement:
+        # Only run this service on Linux nodes
+        constraints: [node.platform.os == linux]
+
+  portainer:
+    # Portainer Community Edition image (using the 'sts' tag)
+    image: portainer/portainer-ce:sts
+    # Connect Portainer to the Portainer Agent through TCP on port 9001, skipping TLS verification
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    volumes:
+      # Persistent storage for Portainer data
+      - portainer_data:/data
+    networks:
+      - YOUR_NETWORK
+    deploy:
+      # Run a single replicated instance of Portainer
+      mode: replicated
+      replicas: 1
+      placement:
+        # Run this service only on the manager node named 'manager1'
+        constraints: [node.hostname == manager1]
+      labels:
+
+networks:
+  network_swarm_public:
+    # Use an existing external Docker network
+    external: true
+    # Allow containers to attach to this network manually
+    attachable: true
+    name: YOUR_NETWORK
+
+volumes:
+  portainer_data:
+    # Use an existing external Docker volume for persistent data storage
+    external: true
+    name: portainer_data
