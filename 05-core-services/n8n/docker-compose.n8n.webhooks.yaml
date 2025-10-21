@@ -1,0 +1,224 @@
+services:
+  # Definition of the n8n Editor service
+  n8n_webhook:
+    # Docker image for n8n, version 1.105.3
+    image: n8nio/n8n:1.105.3
+    # Set the container hostname dynamically based on service name and task slot
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    # Default command to start the n8n web server
+    command: webhook
+    # Attach the service to the public swarm network
+    networks:
+      - YOUR_NETWORK
+    # Environment variables to configure n8n
+    environment:
+      # General n8n Configuration #############################
+      # Encryption key for securing data - generate a strong key!
+      - N8N_ENCRYPTION_KEY=YOUR_KEY
+      # Set the execution environment (production)
+      - NODE_ENV=production
+      # Enable or disable public metrics page
+      - N8N_METRICS=false
+      # Enable or disable diagnostic data sending
+      - N8N_DIAGNOSTICS_ENABLED=false
+      # Maximum allowed payload size in MB
+      - N8N_PAYLOAD_SIZE_MAX=16
+      # Set logging level (info, debug, error, etc.)
+      - N8N_LOG_LEVEL=info
+      # Timezone for the application
+      - GENERIC_TIMEZONE=YOUR_TIMEZONE
+      # Enforce configuration file permissions
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # Enable task runners (false here)
+      - N8N_RUNNERS_ENABLED=false
+      # Runner mode (internal here)
+      - N8N_RUNNERS_MODE=internal
+      # Offload manual executions to workers (disabled)
+      - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=false
+
+      #########################################################
+      # Database Configuration #################################
+      # Database type (PostgreSQL)
+      - DB_TYPE=postgresdb
+      # Database name
+      - DB_POSTGRESDB_DATABASE=postgres
+      # Database host
+      - DB_POSTGRESDB_HOST=SUPABASE_HOST
+      # Database port
+      - DB_POSTGRESDB_PORT=SUPABASE_PORT
+      # Database user
+      - DB_POSTGRESDB_USER=SUPABASE_USER
+      # Database password
+      - DB_POSTGRESDB_PASSWORD=SUPABASE_PASSWORD
+      # Database schema
+      - DB_POSTGRESDB_SCHEMA=n8n
+
+      #########################################################
+      # n8n Address Configuration ##############################
+      # HTTP port n8n listens on (default 5678)
+      - N8N_PORT=5678
+      # Hostname for the n8n editor
+      - N8N_HOST=YOUR_N8N_DOMAIN_WITHOUT_HTTPS
+      # Full base URL of the n8n editor (must end with '/')
+      - N8N_EDITOR_BASE_URL=YOUR_N8N_DOMAIN_WITH_HTTPS
+      # Force SSL usage internally
+      - N8N_PROTOCOL=https
+      # Webhook URL (can be subdomain or different domain)
+      - WEBHOOK_URL=YOUR_N8N_DOMAIN_WITH_HTTPS
+      # Webhook path prefix
+      - N8N_ENDPOINT_WEBHOOK=webhook
+
+      #########################################################
+      # Execution Mode Configuration (Queue) ##################
+      # Execution mode set to queue to process workflows asynchronously
+      - EXECUTIONS_MODE=queue
+      # Redis host for queue management
+      - QUEUE_BULL_REDIS_HOST=redis_n8n
+      # Redis port
+      - QUEUE_BULL_REDIS_PORT=6379
+      # Redis database index
+      - QUEUE_BULL_REDIS_DB=2
+      # Uncomment and set if Redis requires a password
+      # - QUEUE_BULL_REDIS_PASSWORD=YOUR_PASSWORD
+      # Suggested job execution timeout in seconds (-1 disables)
+      - EXECUTIONS_TIMEOUT=3600 # 1 hour
+      # Maximum job execution timeout in seconds (-1 disables)
+      - EXECUTIONS_TIMEOUT_MAX=7200 # 2 hours
+
+      #########################################################
+      # n8n UI Configuration ###################################
+      # Enable or disable version notifications
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      # Disable public API documentation UI (Swagger UI)
+      - N8N_PUBLIC_API_SWAGGERUI_DISABLED=true
+      # Enable templates in the UI
+      - N8N_TEMPLATES_ENABLED=false
+      # Disable onboarding flow tips (true = disabled)
+      - N8N_ONBOARDING_FLOW_DISABLED=true
+      # Enable or disable workflow tags
+      - N8N_WORKFLOW_TAGS_DISABLED=false
+      # Hide usage info page in UI
+      - N8N_HIDE_USAGE_PAGE=false
+
+      #########################################################
+      # Data Maintenance and Cleanup ##########################
+      # Enable execution data pruning (automatic cleanup)
+      - EXECUTIONS_DATA_PRUNE=true
+      # Max age for execution data (in hours, here 168 = 1 week)
+      - EXECUTIONS_DATA_MAX_AGE=168
+      # Frequency (minutes) for hard delete pruning
+      - EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL=15
+      # Frequency (minutes) for soft delete pruning
+      - EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL=60
+      # Max number of executions to keep before pruning
+      - EXECUTIONS_DATA_PRUNE_MAX_COUNT=10000
+      ######################## opcional #######################
+      # Save executions on error (all = save all, none = save none)
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=all
+      # Do not save successful executions (all = save all, none = save none)
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=none
+      # Do not save node progress during execution (true = save all, false = save none)
+      - EXECUTIONS_DATA_SAVE_ON_PROGRESS=false
+      # Save manual executions (true = save all, false = save none)
+      - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
+
+      #########################################################
+      # Node.js Libraries Configuration #######################
+      # Allow all native libraries in the code node
+      - NODE_FUNCTION_ALLOW_BUILTIN=*
+      # Allow lodash external library in code node
+      - NODE_FUNCTION_ALLOW_EXTERNAL=lodash
+      # Enable community packages usage
+      - N8N_COMMUNITY_PACKAGES_ENABLED=true
+      # Reinstall missing community nodes automatically
+      - N8N_REINSTALL_MISSING_PACKAGES=true
+      # Path for custom nodes
+      - N8N_NODE_PATH=/home/node/.n8n/nodes
+
+      #########################################################
+      # AI Features Configuration ##############################
+      # Enable AI features (disabled here)
+      - N8N_AI_ENABLED=false
+      # AI provider (e.g., openai)
+      - N8N_AI_PROVIDER=openai
+      # OpenAI API key for AI features (empty here)
+      - N8N_AI_OPENAI_API_KEY=
+
+      #########################################################
+      # Email Configuration (Multi-user mode) #################
+      # Email sending mode (SMTP)
+      - N8N_EMAIL_MODE=smtp
+      # SMTP server hostname
+      - N8N_SMTP_HOST=smtp.google.com
+      # SMTP server port
+      - N8N_SMTP_PORT=25
+      # SMTP username
+      - N8N_SMTP_USER=
+      # SMTP password
+      - N8N_SMTP_PASS=
+      # Email sender address
+      - N8N_SMTP_SENDER=
+      # Use SSL for SMTP (false here)
+      - N8N_SMTP_SSL=false
+      # Sentry error reporting DSN (backend)
+      - N8N_SENTRY_DSN=
+      # Sentry error reporting DSN (frontend)
+      - N8N_FRONTEND_SENTRY_DSN=
+
+    # Deployment configuration
+    deploy:
+      # Use replicated mode for the editor service
+      mode: replicated
+      # Number of replicas to run (only one instance here)
+      replicas: 1
+      # Placement constraints for scheduling the container
+      placement:
+        constraints:
+          # Run the editor only on manager nodes (lightweight service)
+          - node.role == manager
+          # Uncomment to restrict to specific node or label
+          # - node.hostname == worker1
+          # - node.labels.app == http
+
+      # Resource limits to avoid host overload
+      resources:
+        limits:
+          # Limit CPU usage to 1 CPU core
+          cpus: "1"
+          # Limit memory to 1024 MB
+          memory: 1024M
+
+      # Service labels for Traefik reverse proxy configuration
+      labels:
+         # Configure Traefik Routing
+        - traefik.enable=true
+        # Define N8N Editor address
+        - traefik.http.routers.n8n_editor.rule=Host(`YOUR_N8N_DOMAIN_WITHOUT_HTTPS`)
+        # Redirect address to HTTPS
+        - traefik.http.routers.n8n_editor.entrypoints=websecure
+        # Define SSL certificate
+        - traefik.http.routers.n8n_editor.tls.certresolver=letsencryptresolver
+        # Define Editor service
+        - traefik.http.routers.n8n_editor.service=n8n_editor
+        # Define Editor service port
+        - traefik.http.services.n8n_editor.loadbalancer.server.port=5678
+        # Configure Host Header usage
+        - traefik.http.services.n8n_editor.loadbalancer.passHostHeader=true
+ 
+      # Configure service update mode
+      # Update configuration for service rolling updates
+      update_config:
+        # Number of containers updated in parallel
+        parallelism: 1
+        # Delay between updating containers
+        delay: 30s
+        # Start the new container before stopping the old one
+        order: start-first
+        # Rollback if update fails
+        failure_action: rollback
+
+# Definition of external Docker network
+networks:
+  YOUR_NETWORK:
+    name: YOUR_NETWORK
+    external: true

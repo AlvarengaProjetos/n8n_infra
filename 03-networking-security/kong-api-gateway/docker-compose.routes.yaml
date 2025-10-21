@@ -2,10 +2,8 @@ _format_version: "3.0"
 _transform: true
 
 services:
-  ######################################
-  ### Route Management for Kong
-  ######################################
-  # Example endpoint: https://api.flowaitecnologia.shop/buffet-lucia
+  # Route Management for Kong
+  # Example endpoint: https://kong-api.your-domain.com/n8n-instance
   - name: n8n-instance
     url: https://YOUR-DOMAIN/webhook/n8n-instance
     # Define the routes
@@ -18,10 +16,7 @@ services:
         paths:
           - /n8n-instance
 
-
-########################################################################################
-### Users and Access Keys
-########################################################################################
+# Users and Access Keys
 consumers:
   - username: YOUR_ADMIN
     keyauth_credentials:

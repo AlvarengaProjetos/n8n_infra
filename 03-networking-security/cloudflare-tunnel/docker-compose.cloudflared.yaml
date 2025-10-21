@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   cloudflared:
     # Defines the container image to use

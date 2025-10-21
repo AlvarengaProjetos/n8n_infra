@@ -1,7 +1,4 @@
-version: "3.7"
-
 services:
-
   agent:
     # Portainer Agent Stable image (using the 'sts' tag) 
     # https://hub.docker.com/r/portainer/agent/tags

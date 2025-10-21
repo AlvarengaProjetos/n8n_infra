@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   # Defines the service name
   kong:

@@ -1,24 +1,17 @@
-version: "3.7"
-
 services:
   # Definition of the n8n Editor service
-  n8n_editor:
+  n8n_worker:
     # Docker image for n8n, version 1.105.3
     image: n8nio/n8n:1.105.3
     # Set the container hostname dynamically based on service name and task slot
     hostname: "{{.Service.Name}}.{{.Task.Slot}}"
     # Default command to start the n8n web server
-    command: start
+    command: worker --concurrency=10
     # Attach the service to the public swarm network
     networks:
       - YOUR_NETWORK
     # Environment variables to configure n8n
     environment:
-      #########################################################
-      # n8n Environment Variables Documentation ###############
-      # https://docs.n8n.io/hosting/environment-variables/environment-variables/
-      #########################################################
-
       # General n8n Configuration #############################
       # Encryption key for securing data - generate a strong key!
       - N8N_ENCRYPTION_KEY=YOUR_KEY
@@ -52,7 +45,7 @@ services:
       # Database host
       - DB_POSTGRESDB_HOST=SUPABASE_HOST
       # Database port
-      - DB_POSTGRESDB_PORT=6543
+      - DB_POSTGRESDB_PORT=SUPABASE_PORT
       # Database user
       - DB_POSTGRESDB_USER=SUPABASE_USER
       # Database password
@@ -65,13 +58,13 @@ services:
       # HTTP port n8n listens on (default 5678)
       - N8N_PORT=5678
       # Hostname for the n8n editor
-      - N8N_HOST=YOUR_DOMAIN
+      - N8N_HOST=YOUR_N8N_DOMAIN_WITHOUT_HTTPS
       # Full base URL of the n8n editor (must end with '/')
-      - N8N_EDITOR_BASE_URL=YOUR_DOMAIN
+      - N8N_EDITOR_BASE_URL=YOUR_N8N_DOMAIN_WITH_HTTPS
       # Force SSL usage internally
       - N8N_PROTOCOL=https
       # Webhook URL (can be subdomain or different domain)
-      - WEBHOOK_URL=YOUR_DOMAIN
+      - WEBHOOK_URL=YOUR_N8N_DOMAIN_WITH_HTTPS
       # Webhook path prefix
       - N8N_ENDPOINT_WEBHOOK=webhook
 
@@ -119,13 +112,14 @@ services:
       - EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL=60
       # Max number of executions to keep before pruning
       - EXECUTIONS_DATA_PRUNE_MAX_COUNT=10000
-      # Save executions on error (all = save all)
+      ######################## opcional #######################
+      # Save executions on error (all = save all, none = save none)
       - EXECUTIONS_DATA_SAVE_ON_ERROR=all
-      # Do not save successful executions
+      # Do not save successful executions (all = save all, none = save none)
       - EXECUTIONS_DATA_SAVE_ON_SUCCESS=none
-      # Do not save node progress during execution
+      # Do not save node progress during execution (true = save all, false = save none)
       - EXECUTIONS_DATA_SAVE_ON_PROGRESS=false
-      # Save manual executions
+      # Save manual executions (true = save all, false = save none)
       - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
 
       #########################################################
@@ -196,7 +190,22 @@ services:
 
       # Service labels for Traefik reverse proxy configuration
       labels:
-
+         # Configure Traefik Routing
+        - traefik.enable=true
+        # Define N8N Editor address
+        - traefik.http.routers.n8n_editor.rule=Host(`YOUR_N8N_DOMAIN_WITHOUT_HTTPS`)
+        # Redirect address to HTTPS
+        - traefik.http.routers.n8n_editor.entrypoints=websecure
+        # Define SSL certificate
+        - traefik.http.routers.n8n_editor.tls.certresolver=letsencryptresolver
+        # Define Editor service
+        - traefik.http.routers.n8n_editor.service=n8n_editor
+        # Define Editor service port
+        - traefik.http.services.n8n_editor.loadbalancer.server.port=5678
+        # Configure Host Header usage
+        - traefik.http.services.n8n_editor.loadbalancer.passHostHeader=true
+ 
+      # Configure service update mode
       # Update configuration for service rolling updates
       update_config:
         # Number of containers updated in parallel
