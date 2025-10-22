@@ -1,8 +1,5 @@
 
-## Initialization Script: `init-swarm.sh`
-
-```bash
-#!/bin/bash
+### Initialization Script: `init-swarm.sh` ###
 
 # Docker Swarm Initialization Script
 # Initializes Swarm cluster and creates overlay network
