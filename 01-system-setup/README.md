@@ -67,6 +67,7 @@ It should show you:
 
 <pre> manager1 </pre>
 
+If you need to add more managers simply change NEW_HOSTNAME value to manager2, manager3, worker1, worker2, etc.
 
 ## 5- System Optimization
 Copy and paste this in your terminal:
@@ -76,3 +77,6 @@ Copy and paste this in your terminal:
 Paste the contents of your optimizations.conf file into sysctl.conf, save, and apply changes with:
 
 <pre> bash sudo sysctl -p </pre>
+
+
+Reference 
