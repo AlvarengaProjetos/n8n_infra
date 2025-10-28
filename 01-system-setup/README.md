@@ -49,7 +49,7 @@ sudo sysctl -p
 
 
 
-0- Prerequisites
+## 0- Prerequisites
 
 A virtual machine with Debian 13 installed.
 
@@ -69,7 +69,7 @@ Real-time notifications via Discord and Telegram.
 Automated alerts when your VM/container goes down.
 Comprehensive monitoring and logging.
 
-2- Installation Steps
+## 2- Installation Steps
 Sign up for HetrixTools.
 Create an account at HetrixTools.
 Add a new server in your dashboard.
@@ -84,12 +84,12 @@ Replace this example command in hetrixtools-install.sh with your actual HetrixTo
 Copy, paste, and execute the hetrixtools-install.sh content into your terminal.
 
 
-3- Verification
+## 3- Verification
 Check your HetrixTools dashboard to confirm your server appears online.
 Test notifications by triggering an alert condition.
 Verify all monitored services are reporting correctly.
 
-4- Hostname Configuration Guide
+## 4- Hostname Configuration Guide
 
 Purpose: Configure system hostname for proper identification in Docker Swarm cluster.
 
@@ -110,7 +110,7 @@ It should show you:
 manager1
 
 
-5- System Optimization
+## 5- System Optimization
 Copy and paste this in your terminal:
 
 sudo nano /etc/sysctl.conf
