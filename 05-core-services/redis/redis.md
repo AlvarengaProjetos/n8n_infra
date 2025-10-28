@@ -1,0 +1,1 @@
+# REDIS DOC AVAILABLE AT https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-stack/docker/

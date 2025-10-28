@@ -1,0 +1,18 @@
+services:
+  cloudflared:
+    # Defines the container image to use
+    image: cloudflare/cloudflared:latest
+    # Specifies the network the container will use
+    networks:
+      - YOUR_NETWORK
+    # Runs the tunnel command with the provided token
+    command: tunnel --no-autoupdate run --token YOUR_TOKEN_HERE
+    # Deployment settings for the cloudflared service
+    deploy:
+      # The 'global' mode ensures the service runs on every node in the Swarm cluster
+      mode: global
+
+networks:
+  network_swarm_public:
+    name: YOUR_NETWORK
+    external: true

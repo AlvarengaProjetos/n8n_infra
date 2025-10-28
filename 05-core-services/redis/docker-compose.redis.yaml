@@ -1,0 +1,50 @@
+services:
+  # Definition of the Redis service
+  redis_n8n:
+    # Use the official Redis image, version 7.2 based on Alpine Linux (lightweight)
+    image: redis:7.2-alpine
+    # Set the container hostname dynamically based on service name and task slot
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    # Command to start Redis with append-only mode enabled on port 6379
+    command: redis-server --appendonly yes --port 6379
+    # If you want to enable Redis password authentication, uncomment and modify:
+    # command: redis-server --appendonly yes --port 6379 --requirepass YOUR_PASSWORD
+    # Attach this service to the specified Docker network
+    networks:
+      - YOUR_NETWORK
+    # Optional: expose Redis port to the host
+    # ports:
+    # - 6379:6379
+    # Mount an external Docker volume for Redis data persistence
+    volumes:
+      - redis_data:/data
+    deploy:
+      # Deploy mode set to replicated (multiple instances if needed)
+      mode: replicated
+      # Number of replicas of this Redis service to run
+      replicas: 1
+      # Placement constraints to control where the service runs
+      placement:
+        constraints:
+          # Run only on manager nodes
+          - node.role == manager
+          # Optional: restrict to a specific node by hostname
+          # - node.hostname == bancodedados1
+      resources:
+        limits:
+          # Limit CPU usage to 1 CPU core
+          cpus: "1.0"
+          # Limit memory usage to 1024 megabytes (1 GB)
+          memory: 1024M
+
+# Define external Docker volume for Redis data storage persistence
+volumes:
+  redis_data:
+    external: true
+    name: redis_data
+
+# Define external Docker network used by the service
+networks:
+  network_swarm_public:
+    external: true
+    name: YOUR_NETWORK
