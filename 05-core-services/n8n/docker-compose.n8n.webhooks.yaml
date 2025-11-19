@@ -9,7 +9,7 @@ services:
     command: webhook
     # Attach the service to the public swarm network
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     # Environment variables to configure n8n
     environment:
       # General n8n Configuration #############################
@@ -219,6 +219,6 @@ services:
 
 # Definition of external Docker network
 networks:
-  YOUR_NETWORK:
-    name: YOUR_NETWORK
+  network_swarm_public:
+    name: network_swarm_public
     external: true

@@ -7,7 +7,7 @@ services:
     hostname: "{{.Service.Name}}.{{.Task.Slot}}"
     # Attaches the service to a predefined Docker network
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     # Sets environment variables for configuring Kong
     environment:
       # Enables DB-less mode (Kong without a database)
@@ -54,4 +54,4 @@ services:
 networks:
   network_swarm_public:
     external: true
-    name: YOUR_NETWORK
+    name: network_swarm_public

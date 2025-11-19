@@ -11,7 +11,7 @@ services:
     # command: redis-server --appendonly yes --port 6379 --requirepass YOUR_PASSWORD
     # Attach this service to the specified Docker network
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     # Optional: expose Redis port to the host
     # ports:
     # - 6379:6379
@@ -47,4 +47,4 @@ volumes:
 networks:
   network_swarm_public:
     external: true
-    name: YOUR_NETWORK
+    name: network_swarm_public

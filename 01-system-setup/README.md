@@ -83,9 +83,9 @@ Paste the contents of your optimizations.conf file into sysctl.conf, save, and a
 
 
 ### Reference:
-https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
-https://docs.hetrixtools.com/install-the-hetrixtools-server-monitor-agent/
-https://docs.redhat.com/pt-br/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/changing-a-hostname-using-hostnamectl
-https://wiki.debian.org/Hostname
-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/tuning-the-network-performance_monitoring-and-managing-system-status-and-performance
-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/s-network-dont-adjust-defaults
+-https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
+-https://docs.hetrixtools.com/install-the-hetrixtools-server-monitor-agent/
+-https://docs.redhat.com/pt-br/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/changing-a-hostname-using-hostnamectl
+-https://wiki.debian.org/Hostname
+-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/tuning-the-network-performance_monitoring-and-managing-system-status-and-performance
+-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/s-network-dont-adjust-defaults
