@@ -9,7 +9,7 @@ services:
       # Mount Docker volumes directory for volume management
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     deploy:
       # Run one agent container on every node in the swarm cluster
       mode: global
@@ -26,7 +26,7 @@ services:
       # Persistent storage for Portainer data
       - portainer_data:/data
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     deploy:
       # Run a single replicated instance of Portainer
       mode: replicated
@@ -42,10 +42,10 @@ networks:
     external: true
     # Allow containers to attach to this network manually
     attachable: true
-    name: YOUR_NETWORK
+    name: network_swarm_public
 
 volumes:
   portainer_data:
     # Use an existing external Docker volume for persistent data storage
     external: true
-    name: portainer_data
+    name: network_swarm_public

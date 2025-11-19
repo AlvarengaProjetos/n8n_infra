@@ -1,3 +1,5 @@
+# System Setup
+
 ## 0- Prerequisites
 
 A virtual machine with Debian 12 installed.
@@ -10,8 +12,6 @@ Detailed Answer: Debian provides exceptional stability, security, and long-term 
 Learn more about Why Debian at:
 https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
 
-<pre> bash apt update && apt upgrade -y </pre>
-
 ## 1- Monitoring Setup with HetrixTools
 
 ### Why HetrixTools?
@@ -23,6 +23,9 @@ https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
 
 ## 2- Installation Steps
 
+First, update your machine.
+<pre> bash apt update && apt upgrade -y </pre>
+
 Sign up for HetrixTools.
 
 Create an account at HetrixTools.
@@ -32,12 +35,12 @@ Add a new server in your dashboard.
 For visual learners:
 [HetrixTools Setup Tutorial](https://www.youtube.com/watch?v=m0LFzuVTtbA)
 
-
-<pre> bash wget -qO- https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh | sudo bash -s YOUR_UNIQUE_CODE_HERE 1 0 1 1 1 80,443 </pre>
+Or you can check the official documentation
 
 Replace this example command in hetrixtools-install.sh with your actual HetrixTools installation command.
 Copy, paste, and execute the hetrixtools-install.sh content into your terminal.
 
+<pre> bash wget -qO- https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh | sudo bash -s YOUR_UNIQUE_CODE_HERE 1 0 1 1 1 80,443 </pre>
 
 ## 3- Verification
 
@@ -79,4 +82,10 @@ Paste the contents of your optimizations.conf file into sysctl.conf, save, and a
 <pre> bash sudo sysctl -p </pre>
 
 
-Reference 
+### Reference:
+-https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
+-https://docs.hetrixtools.com/install-the-hetrixtools-server-monitor-agent/
+-https://docs.redhat.com/pt-br/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/changing-a-hostname-using-hostnamectl
+-https://wiki.debian.org/Hostname
+-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/tuning-the-network-performance_monitoring-and-managing-system-status-and-performance
+-https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/s-network-dont-adjust-defaults

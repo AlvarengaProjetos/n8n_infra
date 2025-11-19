@@ -4,7 +4,7 @@ services:
     image: cloudflare/cloudflared:latest
     # Specifies the network the container will use
     networks:
-      - YOUR_NETWORK
+      - network_swarm_public
     # Runs the tunnel command with the provided token
     command: tunnel --no-autoupdate run --token YOUR_TOKEN_HERE
     # Deployment settings for the cloudflared service
@@ -14,5 +14,5 @@ services:
 
 networks:
   network_swarm_public:
-    name: YOUR_NETWORK
+    name: network_swarm_public
     external: true

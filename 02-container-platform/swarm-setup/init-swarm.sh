@@ -22,7 +22,7 @@ docker swarm init --advertise-addr=$VM_IP
 
 # Create overlay network for services
 echo "🌐 Creating overlay network..."
-docker network create --driver=overlay --attachable YOUR_NETWORK
+docker network create --driver=overlay --attachable network_swarm_public
 
 echo "✅ Docker Swarm initialized successfully!"
 echo "📊 Current node status:"
