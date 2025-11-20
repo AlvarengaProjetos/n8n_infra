@@ -10,4 +10,4 @@ docker pull cloudflare/cloudflared:latest
 # resolve-image always: ensures the image is pulled and updated if needed
 # -c cloudflared.yaml: specifies the Compose file to use
 # cloudflared: the name of the stack
-docker stack deploy --prune --detach=false --resolve-image always -c cloudflared.yaml cloudflared
+docker stack deploy --prune --detach=false --resolve-image always -c docker-compose.cloudflared.yaml cloudflared

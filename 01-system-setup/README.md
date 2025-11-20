@@ -24,7 +24,9 @@ https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
 ## 2- Installation Steps
 
 First, update your machine.
-<pre> bash apt update && apt upgrade -y </pre>
+```bash 
+apt update && apt upgrade -y
+```
 
 Sign up for HetrixTools.
 
@@ -40,7 +42,9 @@ Or you can check the official documentation
 Replace this example command in hetrixtools-install.sh with your actual HetrixTools installation command.
 Copy, paste, and execute the hetrixtools-install.sh content into your terminal.
 
-<pre> bash wget -qO- https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh | sudo bash -s YOUR_UNIQUE_CODE_HERE 1 0 1 1 1 80,443 </pre>
+```bash 
+wget -qO- https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh | sudo bash -s YOUR_UNIQUE_CODE_HERE 1 0 1 1 1 80,443
+```
 
 ## 3- Verification
 
@@ -52,40 +56,48 @@ Verify all monitored services are reporting correctly.
 
 ## 4- Hostname Configuration Guide
 
-Purpose: Configure system hostname for proper identification in Docker Swarm cluster.
+Configure system hostname for proper identification in Docker Swarm cluster.
 
 Copy, paste, and execute change-hostname.sh content into your terminal.
 
 Reboot with:
 
-<pre> bash shutdown -r now </pre>
-
-Verification
+```bash 
+shutdown -r now
+```
 
 After reboot, verify with:
 
-<pre> bash hostnamectl status </pre>
+```bash 
+hostnamectl status
+```
 
 It should show you:
 
-<pre> manager1 </pre>
+```bash 
+manager1
+```
 
 If you need to add more managers simply change NEW_HOSTNAME value to manager2, manager3, worker1, worker2, etc.
 
 ## 5- System Optimization
 Copy and paste this in your terminal:
 
-<pre> bash sudo nano /etc/sysctl.conf </pre>
+```bash 
+sudo nano /etc/sysctl.conf
+```
 
 Paste the contents of your optimizations.conf file into sysctl.conf, save, and apply changes with:
 
-<pre> bash sudo sysctl -p </pre>
+```bash
+sudo sysctl -p
+```
 
 
 ### Reference:
--https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
--https://docs.hetrixtools.com/install-the-hetrixtools-server-monitor-agent/
--https://docs.redhat.com/pt-br/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/changing-a-hostname-using-hostnamectl
--https://wiki.debian.org/Hostname
--https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/tuning-the-network-performance_monitoring-and-managing-system-status-and-performance
--https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/s-network-dont-adjust-defaults
+- https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
+- https://docs.hetrixtools.com/install-the-hetrixtools-server-monitor-agent/
+- https://docs.redhat.com/pt-br/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_networking/changing-a-hostname-using-hostnamectl
+- https://wiki.debian.org/Hostname
+- https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/tuning-the-network-performance_monitoring-and-managing-system-status-and-performance
+- https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/performance_tuning_guide/s-network-dont-adjust-defaults

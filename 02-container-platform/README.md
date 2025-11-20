@@ -12,6 +12,6 @@ If you need to add managers and workers, please follow the instructions in `join
 
 
 ### Reference:
--https://docs.docker.com/engine/install/debian/
--https://docs.docker.com/engine/swarm/admin_guide/
--https://docs.docker.com/engine/swarm/swarm-mode/
+- https://docs.docker.com/engine/install/debian/
+- https://docs.docker.com/engine/swarm/admin_guide/
+- https://docs.docker.com/engine/swarm/swarm-mode/
