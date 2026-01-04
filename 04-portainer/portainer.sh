@@ -7,7 +7,7 @@ docker pull portainer/portainer-ce:sts
 # --prune: removes services that are no longer defined in the compose file
 # --detach=false: run the deploy command in the foreground (waits for completion)
 # --resolve-image always: always pull the image before deploying
-docker stack deploy --prune --detach=false --resolve-image always -c portainer.yaml portainer
+docker stack deploy --prune --detach=false --resolve-image always -c docker-compose.portainer.yaml portainer
 
 # If you lost the first 5 minutes during the initial Portainer admin user creation,
 # you can force the Portainer service to restart to reset the process:

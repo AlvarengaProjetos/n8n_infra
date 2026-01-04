@@ -8,7 +8,7 @@ set -e
 
 echo "🐝 Initializing Docker Swarm Cluster, Please type your Virtual Machine IP:"
 
-VM_IP=$1
+VM_IP= #PUT YOUR VM IP HERE
 
 if [[ ! $VM_IP =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "❌ Error: Invalid IP address format"
