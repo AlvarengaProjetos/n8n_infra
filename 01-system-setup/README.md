@@ -1,8 +1,8 @@
 # System Setup
 
-## 0- Prerequisites
+## Prerequisites
 
-A virtual machine with Debian 12 installed.
+A virtual machine with Debian 12+ installed.
 
 ### Why Debian over Ubuntu?
 
@@ -12,16 +12,16 @@ Detailed Answer: Debian provides exceptional stability, security, and long-term 
 Learn more about Why Debian at:
 https://wiki.debian.org/WhyDebian#Why_Linux.3F_Why_Debian.3F
 
-## 1- Monitoring Setup with HetrixTools
+## Monitoring Setup with HetrixTools
 
 ### Why HetrixTools?
 - A method to monitor your swarm and containers *outside* the swarm.
 - Free tier with generous monitoring capabilities.
-- Real-time notifications via Discord and Telegram.
+- Real-time notifications via Discord and Telegram for free.
 - Automated alerts when your VM/container goes down.
 - Comprehensive monitoring and logging.
 
-## 2- Installation Steps
+## Installation Steps
 
 First, update your machine.
 <pre> bash apt update && apt upgrade -y </pre>
@@ -42,7 +42,7 @@ Copy, paste, and execute the hetrixtools-install.sh content into your terminal.
 
 <pre> bash wget -qO- https://raw.githubusercontent.com/hetrixtools/agent/master/hetrixtools_install.sh | sudo bash -s YOUR_UNIQUE_CODE_HERE 1 0 1 1 1 80,443 </pre>
 
-## 3- Verification
+## Verification
 
 Check your HetrixTools dashboard to confirm your server appears online.
 
@@ -50,7 +50,7 @@ Test notifications by triggering an alert condition.
 
 Verify all monitored services are reporting correctly.
 
-## 4- Hostname Configuration Guide
+## Hostname Configuration Guide
 
 Purpose: Configure system hostname for proper identification in Docker Swarm cluster.
 
@@ -72,7 +72,7 @@ It should show you:
 
 If you need to add more managers simply change NEW_HOSTNAME value to manager2, manager3, worker1, worker2, etc.
 
-## 5- System Optimization
+## System Optimization
 Copy and paste this in your terminal:
 
 <pre> bash sudo nano /etc/sysctl.conf </pre>

@@ -1,4 +1,7 @@
+version: "3.7"
+
 services:
+
   agent:
     # Portainer Agent Stable image (using the 'sts' tag) 
     # https://hub.docker.com/r/portainer/agent/tags
@@ -35,6 +38,14 @@ services:
         # Run this service only on the manager node named 'manager1'
         constraints: [node.hostname == manager1]
       labels:
+      #  - "traefik.enable=true"
+      #  - "traefik.docker.network=network_swarm_public"
+      #  - "traefik.http.routers.portainer.rule=Host(`yourpanel.yourdomain.com`)"
+      #  - "traefik.http.routers.portainer.entrypoints=websecure"
+      #  - "traefik.http.routers.portainer.priority=1"
+      #  - "traefik.http.routers.portainer.tls.certresolver=letsencryptresolver"
+      #  - "traefik.http.routers.portainer.service=portainer"
+      #  - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 networks:
   network_swarm_public:
