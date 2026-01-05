@@ -40,21 +40,18 @@ services:
 
       #########################################################
       # Database Configuration #################################
-      # Database type (PostgreSQL)
+      # Defines the Database Type as Postgres
       - DB_TYPE=postgresdb
-      # Database name
-      - DB_POSTGRESDB_DATABASE=postgres
-      # Database host
-      - DB_POSTGRESDB_HOST=SUPABASE_HOST
-      # Database port
-      - DB_POSTGRESDB_PORT=SUPABASE_PORT
-      # Database user
-      - DB_POSTGRESDB_USER=SUPABASE_USER
-      # Database password
-      - DB_POSTGRESDB_PASSWORD=SUPABASE_PASSWORD
-      # Database schema
-      - DB_POSTGRESDB_SCHEMA=n8n
-
+      # Configures the Database Name
+      - DB_POSTGRESDB_DATABASE=n8n_queue
+      # Configures the Database Host
+      - DB_POSTGRESDB_HOST=postgres
+      # Configures the Database Port
+      - DB_POSTGRESDB_PORT=5432
+      # Configures the Database User
+      - DB_POSTGRESDB_USER=postgres
+      # Configures the Database Password
+      - DB_POSTGRESDB_PASSWORD=YOUR-PASSWORD
       #########################################################
       # n8n Address Configuration ##############################
       # HTTP port n8n listens on (default 5678)

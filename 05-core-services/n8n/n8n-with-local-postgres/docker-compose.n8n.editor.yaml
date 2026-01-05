@@ -1,0 +1,257 @@
+version: "3.7"
+# Definition of Services
+services:
+  # Definition of the Editor Service
+  n8n_editor:
+    # Docker image
+    image: n8nio/n8n:1.123.3
+    # Define the container's hostname
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    # Default command to start the web editor server
+    command: start
+    # Configures the service's network
+    networks:
+      - network_swarm_public
+    # Configures the environment variables
+    environment:
+      #########################################################
+      # N8N Environment Variables Documentation ###############
+      # https://docs.n8n.io/hosting/environment-variables/environment-variables/
+      #########################################################
+      #########################################################
+      #########################################################
+      # General N8N Configuration #############################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Generate a new key here https://www.avast.com/random-password-generator#mac
+      - N8N_ENCRYPTION_KEY=r8djGX2vKieL9zJJ
+      # Configures the runtime environment for N8N
+      - NODE_ENV=production
+      # Enables the Public Metrics Page for N8N
+      - N8N_METRICS=true
+      # Enables sending diagnostics to N8N
+      - N8N_DIAGNOSTICS_ENABLED=false
+      # Configures the maximum Payload size accepted by N8N (in MB)
+      - N8N_PAYLOAD_SIZE_MAX=16
+      # Configures the log level for N8N
+      - N8N_LOG_LEVEL=info
+      # Configures the timezone for N8N
+      - GENERIC_TIMEZONE=YOUR-TIME-ZONE
+      # Configures the Configuration File Permissions
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # Enables Task Runners
+      - N8N_RUNNERS_ENABLED=false
+      - N8N_RUNNERS_MODE=internal
+      # Sends test executions to workers
+      - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=false
+      #########################################################
+      #########################################################
+      #########################################################
+      # Database Configuration ################################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Defines the Database Type as Postgres
+      - DB_TYPE=postgresdb
+      # Configures the Database Name
+      - DB_POSTGRESDB_DATABASE=n8n_queue
+      # Configures the Database Host
+      - DB_POSTGRESDB_HOST=postgres
+      # Configures the Database Port
+      - DB_POSTGRESDB_PORT=5432
+      # Configures the Database User
+      - DB_POSTGRESDB_USER=postgres
+      # Configures the Database Password
+      - DB_POSTGRESDB_PASSWORD=YOUR-PASSWORD
+      #########################################################
+      #########################################################
+      #########################################################
+      # N8N Address Configuration #############################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Defines the HTTP port for N8N (default: 5678)
+      - N8N_PORT=5678
+      # Configures the N8N Editor Host
+      - N8N_HOST=YOUR-DOMAIN
+      # Configures the full address of the Editor (must end with /)
+      - N8N_EDITOR_BASE_URL=YOUR-DOMAIN/
+      # Forces the use of SSL in N8N's internal URLs
+      - N8N_PROTOCOL=https
+      # Configures the Webhook Address
+      # It can be a subdomain or another domain
+      - WEBHOOK_URL=https://YOUR-DOMAIN/
+      # Configures the Webhook Path
+      - N8N_ENDPOINT_WEBHOOK=webhook
+      #########################################################
+      #########################################################
+      #########################################################
+      # Execution Mode Configuration for N8N (Queue) ##########
+      #########################################################
+      #########################################################
+      #########################################################
+      - EXECUTIONS_MODE=queue
+      # Configures the Redis host
+      - QUEUE_BULL_REDIS_HOST=redis_n8n
+      # Configures the Redis port
+      - QUEUE_BULL_REDIS_PORT=6379
+      # Configures the Redis database index
+      - QUEUE_BULL_REDIS_DB=2
+      # Configures the Redis password (if used)
+      # - QUEUE_BULL_REDIS_PASSWORD=YOUR_PASSWORD
+      # Configures the suggested execution time for a job in the queue (-1 for no limit)
+      - EXECUTIONS_TIMEOUT=3600 # (1 hour)
+      # Configures the maximum execution time for a job in the queue (-1 for no limit)
+      - EXECUTIONS_TIMEOUT_MAX=7200 # (2 hours)
+      #########################################################
+      #########################################################
+      #########################################################
+      # N8N Interface Configuration ###########################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Enables notifications for new N8N versions
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=true
+      # Configures N8N to display the Public API Documentation
+      - N8N_PUBLIC_API_SWAGGERUI_DISABLED=false
+      # Enables Templates in N8N Interface
+      - N8N_TEMPLATES_ENABLED=true
+      # Disables integration tips when creating a new workflow (true = disabled)
+      - N8N_ONBOARDING_FLOW_DISABLED=true
+      # Disables the workflow tags feature (false = enabled)
+      - N8N_WORKFLOW_TAGS_DISABLED=false
+      # Hides the N8N usage information screen
+      - N8N_HIDE_USAGE_PAGE=false
+      #########################################################
+      #########################################################
+      #########################################################
+      # N8N Maintenance and Data Cleanup Configuration ########
+      # https://docs.n8n.io/hosting/scaling/execution-data/
+      #########################################################
+      #########################################################
+      #########################################################
+      # Configures the cleanup of execution data
+      - EXECUTIONS_DATA_PRUNE=true
+      # Configures the maximum storage time for execution data
+      - EXECUTIONS_DATA_MAX_AGE=336 # 2 weeks
+      # Frequency (in minutes) at which execution data should be permanently deleted
+      - EXECUTIONS_DATA_PRUNE_HARD_DELETE_INTERVAL=15
+      # Frequency (in minutes) at which execution data should be deleted reversibly
+      - EXECUTIONS_DATA_PRUNE_SOFT_DELETE_INTERVAL=60
+      # Number of executions to store before deletion
+      - EXECUTIONS_DATA_PRUNE_MAX_COUNT=10000
+      ######################## optional #######################
+      # Save executions that end in errors (all = save, none = don't save)
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=all
+      # Save successful executions (all = save, none = don't save)
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=all
+      # Don't save the progress of the node for each execution (true = save, false = don't save)
+      - EXECUTIONS_DATA_SAVE_ON_PROGRESS=true
+      # Don't save manually started executions (true = save, false = don't save)
+      - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
+      #########################################################
+      #########################################################
+      #########################################################
+      # N8N Libraries Configuration ###########################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Configures which native libraries can be imported in the Code node
+      - NODE_FUNCTION_ALLOW_BUILTIN=*
+      # Configures the external libraries to be used
+      - NODE_FUNCTION_ALLOW_EXTERNAL=lodash
+      # Enables the use of community packages
+      - N8N_COMMUNITY_PACKAGES_ENABLED=true
+      # Reinstalls missing community nodes
+      - N8N_REINSTALL_MISSING_PACKAGES=true
+      # Configures the path for custom nodes
+      - N8N_NODE_PATH=/home/node/.n8n/nodes
+      #########################################################
+      #########################################################
+      #########################################################
+      # AI Configuration ######################################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Configures which native libraries can be imported in the Code node
+      - N8N_AI_ENABLED=false
+      # Configures the external libraries to be used
+      - N8N_AI_PROVIDER=openai
+      # Enables the use of community packages
+      - N8N_AI_OPENAI_API_KEY=
+      #########################################################
+      #########################################################
+      #########################################################
+      # Email Configuration (Multi-user) #####################
+      #########################################################
+      #########################################################
+      #########################################################
+      # Email sending mode
+      - N8N_EMAIL_MODE=smtp
+      # Configures the SMTP Host
+      - N8N_SMTP_HOST=smtp.google.com
+      # Configures the SMTP Port
+      - N8N_SMTP_PORT=25
+      # Configures the SMTP User
+      - N8N_SMTP_USER=USER
+      # Configures the SMTP Password
+      - N8N_SMTP_PASS=PASSWORD
+      # Configures the sender email
+      - N8N_SMTP_SENDER=YOUR-EMAIL
+      # Configures SMTP SSL
+      - N8N_SMTP_SSL=false
+      # Error Report (Sentry)
+      # - N8N_SENTRY_DSN=
+      # - N8N_FRONTEND_SENTRY_DSN=
+    # Configures the Application Deployment Mode
+    deploy:
+      # The editor will run in replicated mode
+      mode: replicated
+      # We will have only one instance of the editor
+      replicas: 1
+      # Configures the execution location
+      placement:
+        constraints:
+          # You can run the Editor on the Manager as it uses few resources
+          - node.role == manager
+          # - node.hostname == worker1
+          # - node.labels.app == http # label name: app, label value: http
+      # Limitation
+      resources:
+        # Defines the Resource Limits for this Service
+        limits:
+          # Defines the amount of CPU for N8N to avoid host crashes
+          cpus: "1"
+          # Defines the amount of RAM for N8N to avoid host crashes
+          memory: 1024M
+      # Defines the Labels for the Service
+      labels:
+        # Configures the Traefik Routing
+        - traefik.enable=true
+        # Defines the Editor address for N8N
+        - traefik.http.routers.n8n_editor.rule=Host(`YOUR-DOMAIN`)
+        # Redirects the address to HTTPS
+        - traefik.http.routers.n8n_editor.entrypoints=websecure
+        # Defines the SSL certificate
+        - traefik.http.routers.n8n_editor.tls.certresolver=letsencryptresolver
+        # Defines the Editor Service
+        - traefik.http.routers.n8n_editor.service=n8n_editor
+        # Defines the Editor Service port
+        - traefik.http.services.n8n_editor.loadbalancer.server.port=5678
+        # Defines the use of Host Header
+        - traefik.http.services.n8n_editor.loadbalancer.passHostHeader=true
+      # Configures the service update mode
+      update_config:
+        # Configures the update parallelism
+        parallelism: 1
+        # Configures the delay between updates
+        delay: 30s
+        # Configures the action in case of failure
+        order: start-first
+        # Configures the action in case of failure
+        failure_action: rollback
+networks:
+  network_swarm_public:
+    name: network_swarm_public
+    external: true

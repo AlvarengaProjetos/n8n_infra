@@ -1,0 +1,69 @@
+version: "3.7"
+# definition of stack services
+services:
+  # definition of the Services
+  postgres:
+    # postgres image
+    image: postgres:16
+    # Defines the Hostname
+    hostname: "{{.Service.Name}}.{{.Task.Slot}}"
+    # configures the network for the service
+    networks:
+      - network_swarm_public
+    # entrypoint for configuring postgres
+    entrypoint: docker-entrypoint.sh
+    # command to run postgres
+    command:
+      [
+        postgres,
+        --max_connections=200,
+        --wal_level=minimal,
+        --max_wal_senders=0,
+        --port=5432
+      ]
+    # configures the postgres service port for external access
+    #ports:
+    #  - 5432:5432
+    # configures the volume for the postgres service
+    volumes:
+      # to save in Docker volume
+      - postgres_data:/var/lib/postgresql/data
+      # To save in an external volume attached to the VPS
+      # - /mnt/VOLUME/folder:/var/lib/postgresql/data
+    # configures the environment variables for the postgres service
+    environment:
+      # Defines the password for the postgres user
+      - POSTGRES_PASSWORD=YOUR-PASSWORD
+      # Fix for postgres version 16.1
+      - POSTGRES_INITDB_ARGS="--auth-host=scram-sha-256"
+    # defines the container deployment mode
+    deploy:
+      # configures the deployment mode for the postgres service
+      mode: replicated
+      # configures the number of replicas for the postgres service (1 is the default)
+      replicas: 1
+      # Defines the deployment strategy for the service
+      placement:
+        constraints:
+          # you can define where the service will run (worker or manager)
+          # here you can define that you want it to run on the manager
+          - node.role == manager
+          # or you can choose a specific node by hostname
+          #- node.hostname == database01
+      resources:
+        # configures the resource limits for the postgres service
+        limits:
+          # configures the CPU limit for the postgres service
+          cpus: "1"
+          # configures the memory limit for the postgres service
+          memory: 1024M
+
+volumes:
+  postgres_data:
+    external: true
+    name: postgres_data
+
+networks:
+  network_swarm_public:
+    external: true
+    name: network_swarm_public

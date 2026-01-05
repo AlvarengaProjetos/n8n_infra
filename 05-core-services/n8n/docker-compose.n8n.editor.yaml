@@ -1,8 +1,10 @@
+version: "3.7"
+# Definition of Services
 services:
   # Definition of the n8n Editor service
   n8n_editor:
-    # Docker image for n8n, version 1.105.3
-    image: n8nio/n8n:1.105.3
+    # Docker image for n8n
+    image: n8nio/n8n:1.123.3
     # Set the container hostname dynamically based on service name and task slot
     hostname: "{{.Service.Name}}.{{.Task.Slot}}"
     # Default command to start the n8n web server
@@ -152,17 +154,17 @@ services:
       # SMTP server port
       - N8N_SMTP_PORT=25
       # SMTP username
-      - N8N_SMTP_USER=
+      - N8N_SMTP_USER=USER
       # SMTP password
-      - N8N_SMTP_PASS=
+      - N8N_SMTP_PASS=SENHA
       # Email sender address
-      - N8N_SMTP_SENDER=
+      - N8N_SMTP_SENDER=YOUR-EMAIL
       # Use SSL for SMTP (false here)
       - N8N_SMTP_SSL=false
       # Sentry error reporting DSN (backend)
-      - N8N_SENTRY_DSN=
+      # - N8N_SENTRY_DSN=
       # Sentry error reporting DSN (frontend)
-      - N8N_FRONTEND_SENTRY_DSN=
+      # - N8N_FRONTEND_SENTRY_DSN=
 
     # Deployment configuration
     deploy:

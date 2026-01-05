@@ -29,7 +29,7 @@ services:
           # Run only on manager nodes
           - node.role == manager
           # Optional: restrict to a specific node by hostname
-          # - node.hostname == bancodedados1
+          # - node.hostname == redisvm
       resources:
         limits:
           # Limit CPU usage to 1 CPU core

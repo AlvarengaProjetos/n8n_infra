@@ -1,8 +1,10 @@
+version: "3.7"
+# Definition of Services
 services:
-  # Definition of the n8n Editor service
+  # Definition of the n8n mcp service
   n8n_mcp_api:
-    # Docker image for n8n, version 1.105.3
-    image: n8nio/n8n:1.105.3
+    # Docker image for n8n
+    image: n8nio/n8n:1.123.3
     # Set the container hostname dynamically based on service name and task slot
     hostname: "{{.Service.Name}}.{{.Task.Slot}}"
     # Default command to start the n8n web server
